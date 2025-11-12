@@ -58,14 +58,23 @@ The application is configured for Replit's autoscale deployment:
 - Run command: `npx vite preview --host 0.0.0.0 --port 5000`
 
 ## Recent Changes
-- **2025-11-12**: Initial setup in Replit environment
+- **2025-11-12**: Initial setup and responsive design improvements
   - Created Vite + React project structure
-  - Configured TailwindCSS
-  - Set up development workflow on port 5000
+  - Configured TailwindCSS with responsive breakpoints
+  - Set up development workflow on port 5000 with proper HMR WebSocket configuration
   - Configured deployment settings
+  - **Responsive Design Enhancements**:
+    - Added mobile-first responsive layout (sm, md breakpoints)
+    - Optimized chat message display with proper text wrapping and scrolling
+    - Increased chat area padding (280px-320px) to ensure messages are fully visible above interaction panel
+    - Made all UI elements responsive (buttons, text sizes, spacing)
+    - Fixed viewport height constraints for proper display on all screen sizes
+    - Added breakpoint-specific text sizes and spacing for better mobile experience
 
 ## Technical Notes
 - The app is a single-page application with no backend
 - All scenario data is stored in a JavaScript array within App.jsx
 - No database or API calls required
 - Fully client-side rendered
+- **Responsive Design**: Uses Tailwind CSS breakpoints (sm: 640px, md: 768px) for mobile/tablet/desktop compatibility
+- **Layout**: Fixed viewport height (100vh) with proper overflow handling to prevent scroll issues

@@ -243,29 +243,29 @@ export default function PhishGuardApp() {
   // --- Renders ---
 
   const RenderHeader = () => (
-    <div className="bg-slate-900 p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg">
-      <div className="flex items-center gap-2">
-        <div className="bg-cyan-500/20 p-2 rounded-lg">
-          <Shield className="w-6 h-6 text-cyan-400" />
+    <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg">
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="bg-cyan-500/20 p-1.5 sm:p-2 rounded-lg">
+          <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
         </div>
         <div>
-          <h1 className="font-black text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
-          <p className="text-[10px] text-slate-400 font-mono">НИВО {level}</p>
+          <h1 className="font-black text-sm sm:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
+          <p className="text-[9px] sm:text-[10px] text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
       
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
         <div className="flex flex-col items-end">
-          <span className="text-[10px] text-slate-400 uppercase font-bold">Бюджет</span>
-          <div className={`flex items-center gap-1 font-mono font-bold ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
+          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Бюджет</span>
+          <div className={`flex items-center gap-1 font-mono font-bold text-sm sm:text-base ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
         </div>
         {/* XP */}
         <div className="flex flex-col items-end">
-          <span className="text-[10px] text-slate-400 uppercase font-bold">XP</span>
-          <div className="flex items-center gap-1 font-mono font-bold text-purple-400">
+          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">XP</span>
+          <div className="flex items-center gap-1 font-mono font-bold text-purple-400 text-[11px] sm:text-sm">
             {reputation} / 2000
           </div>
         </div>
@@ -348,30 +348,30 @@ export default function PhishGuardApp() {
     if (!currentScenario) return null;
 
     return (
-      <div className="flex flex-col h-full max-w-md mx-auto bg-slate-950 relative shadow-2xl">
+      <div className="flex flex-col h-full w-full max-w-2xl mx-auto bg-slate-950 relative">
         {/* Chat Area */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-6 pb-40">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[280px] sm:pb-[320px]">
           {chatHistory.map((msg, idx) => (
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               
               {msg.role === 'bot' && (
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-slate-700'}`}>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-slate-700'}`}>
                   {msg.role === 'bot' ? '?' : 'АЗ'}
                 </div>
               )}
 
-              <div className={`max-w-[85%] p-4 text-sm leading-relaxed shadow-md ${
+              <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-xs sm:text-sm leading-relaxed shadow-md break-words ${
                 msg.role === 'user' 
                   ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm' 
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
-                  <div className="text-[10px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-2">
-                    <AlertTriangle className="w-3 h-3 text-yellow-500" />
-                    ВХОДЯЩ СИГНАЛ: {msg.sender}
+                  <div className="text-[9px] sm:text-[10px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                    <AlertTriangle className="w-3 h-3 text-yellow-500 shrink-0" />
+                    <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
                 )}
-                {msg.text}
+                <div className="whitespace-pre-wrap break-words">{msg.text}</div>
               </div>
 
             </div>
@@ -379,40 +379,41 @@ export default function PhishGuardApp() {
 
           {/* Feedback Overlay Bubble */}
           {feedback && (
-            <div className={`mx-4 p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
+            <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
               feedback.type === 'success' ? 'bg-green-950/50 border-green-500/50 text-green-100' :
               feedback.type === 'danger' ? 'bg-red-950/50 border-red-500/50 text-red-100' :
               'bg-yellow-950/50 border-yellow-500/50 text-yellow-100'
             }`}>
-              <div className="flex items-center gap-2 font-bold mb-1 text-sm uppercase tracking-wider">
-                {feedback.type === 'success' ? <CheckCircle2 className="w-4 h-4"/> : <XCircle className="w-4 h-4"/>}
-                {feedback.type === 'success' ? 'ЗАПЛАХАТА НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}
+              <div className="flex items-center gap-2 font-bold mb-1 text-xs sm:text-sm uppercase tracking-wider">
+                {feedback.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0"/> : <XCircle className="w-4 h-4 shrink-0"/>}
+                <span className="break-words">{feedback.type === 'success' ? 'ЗАПЛАХАТА НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}</span>
               </div>
-              <p className="text-sm opacity-90">{feedback.text}</p>
+              <p className="text-xs sm:text-sm opacity-90 break-words">{feedback.text}</p>
             </div>
           )}
         </div>
 
         {/* Interaction Area */}
-        <div className="absolute bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-700 p-4 transition-all">
+        <div className="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 p-3 sm:p-4 transition-all shadow-2xl">
           
           {!isScenarioComplete ? (
-            <div className="space-y-3">
-              <div className="flex justify-between items-center px-1">
-                <span className="text-[10px] text-slate-500 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
+            <div className="space-y-2 sm:space-y-3">
+              <div className="flex justify-between items-center px-1 gap-2">
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
                 <button 
                   onClick={() => setShowClue(!showClue)}
-                  className="text-xs flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold"
+                  className="text-[10px] sm:text-xs flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap"
                 >
-                  <BrainCircuit className="w-3 h-3" />
-                  {showClue ? 'Скрий данни' : 'Анализ на данни (Жокер)'}
+                  <BrainCircuit className="w-3 h-3 shrink-0" />
+                  <span className="hidden sm:inline">{showClue ? 'Скрий данни' : 'Анализ на данни (Жокер)'}</span>
+                  <span className="sm:hidden">{showClue ? 'Скрий' : 'Жокер'}</span>
                 </button>
               </div>
               
               {showClue && (
-                <div className="bg-purple-900/20 border border-purple-500/30 p-3 rounded-lg text-xs text-purple-200 italic flex gap-2 animate-in fade-in">
-                  <Zap className="w-4 h-4 shrink-0 text-purple-400" />
-                  {currentScenario.clue}
+                <div className="bg-purple-900/20 border border-purple-500/30 p-2 sm:p-3 rounded-lg text-[11px] sm:text-xs text-purple-200 italic flex gap-2 animate-in fade-in">
+                  <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 text-purple-400 mt-0.5" />
+                  <div className="break-words">{currentScenario.clue}</div>
                 </div>
               )}
 
@@ -421,10 +422,10 @@ export default function PhishGuardApp() {
                   <button
                     key={opt.id}
                     onClick={() => handleChoice(opt)}
-                    className="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-sm text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group"
+                    className="w-full text-left p-2.5 sm:p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-xs sm:text-sm text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group"
                   >
                     <span className="text-cyan-500 font-mono mr-2 opacity-50 group-hover:opacity-100">&gt;</span>
-                    {opt.text}
+                    <span className="break-words">{opt.text}</span>
                   </button>
                 ))}
               </div>
@@ -433,9 +434,9 @@ export default function PhishGuardApp() {
             <div className="space-y-3">
               <button 
                 onClick={handleContinue}
-                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 animate-pulse uppercase"
+                className="w-full py-3 sm:py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 animate-pulse uppercase text-sm sm:text-base"
               >
-                {wallet > 0 ? 'Следваща Битка' : 'Виж Доклад'} <ArrowRight className="w-4 h-4" />
+                {wallet > 0 ? 'Следваща Битка' : 'Виж Доклад'} <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
             </div>
           )}
@@ -483,9 +484,9 @@ export default function PhishGuardApp() {
   );
 
   return (
-    <div className="bg-slate-950 min-h-screen font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden">
+    <div className="bg-slate-950 min-h-screen h-screen font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden">
       {screen !== 'home' && screen !== 'result' && screen !== 'victory' && <RenderHeader />}
-      <main className="flex-1 relative">
+      <main className="flex-1 relative overflow-hidden">
         {screen === 'home' && <RenderHome />}
         {screen === 'game' && <RenderGame />}
         {screen === 'victory' && <RenderVictory />}
