@@ -374,9 +374,9 @@ export default function PhishGuardApp() {
   );
 
   return (
-    <div className="bg-slate-950 min-h-screen h-screen font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden">
+    <div className="bg-slate-950 w-full h-full font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden">
       {screen !== 'home' && screen !== 'result' && screen !== 'victory' && <RenderHeader />}
-      <main className="flex-1 relative overflow-hidden">
+      <main className="flex-1 relative overflow-hidden w-full">
         {screen === 'home' && <RenderHome />}
         {screen === 'game' && <RenderGame />}
         {screen === 'victory' && <RenderVictory />}
