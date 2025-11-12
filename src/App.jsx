@@ -134,11 +134,11 @@ export default function PhishGuardApp() {
     <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg">
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="bg-cyan-500/20 p-1.5 sm:p-2 rounded-lg">
-          <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
+          <Shield className="w-5 h-5 sm:w-10 sm:h-10 text-cyan-400" />
         </div>
         <div>
-          <h1 className="font-black text-sm lg:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
-          <p className="text-[9px] lg:text-lg text-slate-400 font-mono">НИВО {level}</p>
+          <h1 className="font-black text-lg sm:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
+          <p className="text-[9px] sm:text-lg text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
       
@@ -289,10 +289,10 @@ export default function PhishGuardApp() {
           {!isScenarioComplete ? (
             <div className="space-y-2 sm:space-y-3">
               <div className="flex justify-between items-center px-1 gap-2">
-                <span className="text-[9px] sm:text-[10px] text-slate-500 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
+                <span className="text-[9px] sm:text-[10px] text-green-400 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
                 <button 
                   onClick={() => setShowClue(!showClue)}
-                  className="text-[10px] sm:text-xs flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap"
+                  className="text-[11px] sm:text-sm flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap"
                 >
                   <BrainCircuit className="w-3 h-3 shrink-0" />
                   <span className="hidden sm:inline">{showClue ? 'Скрий данни' : 'Анализ на данни (Жокер)'}</span>
