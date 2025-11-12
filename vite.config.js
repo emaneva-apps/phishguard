@@ -6,9 +6,11 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5000,
-    allowedHosts: ['.replit.dev', 'localhost'],
+    strictPort: true,
     hmr: {
-      clientPort: 5000
+      protocol: 'wss',
+      host: process.env.REPLIT_DEV_DOMAIN,
+      clientPort: 443
     }
   },
   preview: {
