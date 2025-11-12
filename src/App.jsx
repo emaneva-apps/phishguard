@@ -245,7 +245,7 @@ export default function PhishGuardApp() {
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               
               {msg.role === 'bot' && (
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-700/70 flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-slate-700'}`}>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
                   {msg.role === 'bot' ? '?' : 'АЗ'}
                 </div>
               )}
