@@ -137,7 +137,7 @@ export default function PhishGuardApp() {
           <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
         </div>
         <div>
-          <h1 className="font-black text-sm sm:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
+          <h1 className="font-black text-sm lg:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
           <p className="text-[9px] lg:text-lg text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
@@ -178,7 +178,7 @@ export default function PhishGuardApp() {
         <h2 className="text-3xl font-black text-white uppercase">Търсим Агенти</h2>
         <p className="text-slate-400 text-sm">
           Разпознай измамата. Запази парите.<br/>
-          Събери <span className="text-purple-400 font-bold">2000 XP</span>, за да станеш Кибер Страж.
+          Събери <span className="text-purple-400 font-bold">2000 XP</span>, за да станеш Кибер Агент.
         </p>
       </div>
 
@@ -211,7 +211,7 @@ export default function PhishGuardApp() {
         <div className="space-y-2">
           <h2 className="text-xs font-bold text-amber-500 tracking-[0.3em] uppercase">Статус Потвърден</h2>
           <h1 className="text-4xl font-black text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">
-            КИБЕР СТРАЖ
+            КИБЕР АГЕНТ
           </h1>
         </div>
         
@@ -245,7 +245,7 @@ export default function PhishGuardApp() {
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               
               {msg.role === 'bot' && (
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-slate-700'}`}>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-700/70 flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-slate-700'}`}>
                   {msg.role === 'bot' ? '?' : 'АЗ'}
                 </div>
               )}
@@ -256,8 +256,8 @@ export default function PhishGuardApp() {
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
-                  <div className="text-[9px] sm:text-[10px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
-                    <AlertTriangle className="w-3 h-3 text-yellow-500 shrink-0" />
+                  <div className="text-[14px] sm:text-[14px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                    <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
                     <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
                 )}
@@ -270,8 +270,8 @@ export default function PhishGuardApp() {
           {/* Feedback Overlay Bubble */}
           {feedback && (
             <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
-              feedback.type === 'success' ? 'bg-green-950/50 border-green-500/50 text-green-100' :
-              feedback.type === 'danger' ? 'bg-red-950/50 border-red-500/50 text-red-100' :
+              feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
+              feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
               'bg-yellow-950/50 border-yellow-500/50 text-yellow-100'
             }`}>
               <div className="flex items-center gap-2 font-bold mb-1 text-xs sm:text-sm uppercase tracking-wider">
