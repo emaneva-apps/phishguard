@@ -59,7 +59,14 @@ export default function PhishGuardApp() {
     const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
     const scenario = SCENARIOS[randomIndex];
     
-    setCurrentScenario(scenario);
+    // Shuffle options using Fisher-Yates algorithm
+    const shuffledOptions = [...scenario.options];
+    for (let i = shuffledOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+    }
+    
+    setCurrentScenario({...scenario, options: shuffledOptions});
     setChatHistory([{ 
       role: 'bot', 
       text: scenario.initialMessage, 
