@@ -20,126 +20,7 @@ import {
   Crown
 } from 'lucide-react';
 
-// --- БАЗА ДАННИ СЪС СЦЕНАРИИ (ПРИМЕРНА) ---
-// В Replit по-късно ще преместиш това в отделен файл (scenarios.js)
-const SCENARIO_DB = [
-  {
-    id: 101,
-    type: 'SMS Фишинг',
-    difficulty: 'Лесно',
-    sender: 'BG-Post-Alert',
-    avatar: 'bg-orange-600',
-    initialMessage: "Пратката Ви е задържана в склад. Потвърдете адрес тук: [link] до 30 мин или ще бъде върната на подателя!",
-    clue: "Виж спешността ('до 30 мин') и заплахата. Пощите не пращат SMS със заплахи за връщане от непознати номера.",
-    options: [
-      { 
-        id: 'a', 
-        text: "Цъкам линка веднага", 
-        outcome: "fail", 
-        feedback: "Грешка! Никога не отваряй линкове за пратки от SMS. Провери номера на товарителницата в официалния сайт." 
-      },
-      { 
-        id: 'b', 
-        text: "Отговарям: 'Коя пратка?'", 
-        outcome: "neutral", 
-        feedback: "Рисковано. Отговорът потвърждава, че телефонният ти номер е активен и ще те търсят пак." 
-      },
-      { 
-        id: 'c', 
-        text: "Игнорирам и проверявам в приложението", 
-        outcome: "success", 
-        feedback: "Точно така! Ако наистина имаш пратка, официалното приложение ще ти каже. Това е въдица." 
-      }
-    ]
-  },
-  {
-    id: 102,
-    type: 'Социално Инженерство',
-    difficulty: 'Средно',
-    sender: 'Direktora_Ivanov',
-    avatar: 'bg-blue-800',
-    initialMessage: "Здравей. Пиша от кабинета. Намерихме неприлично съдържание в училищния ти акаунт. Прати ми паролата си веднага за проверка, за да не те изключим.",
-    clue: "Класическа злоупотреба с авторитет. Използват страха от наказание ('изключване'). Администраторите НИКОГА не искат пароли по чат.",
-    options: [
-      { 
-        id: 'a', 
-        text: "Пращам паролата (паникьосано)", 
-        outcome: "fail", 
-        feedback: "Голяма грешка! Никой истински админ или директор няма да ти иска паролата по чат. Това е измама." 
-      },
-      { 
-        id: 'b', 
-        text: "Искам среща на живо", 
-        outcome: "success", 
-        feedback: "Супер. Ако е спешно, ще ти го кажат в очите. Това разбива анонимността на хакера." 
-      },
-      { 
-        id: 'c', 
-        text: "Извинявам се много", 
-        outcome: "neutral", 
-        feedback: "Не даде паролата, но емоционалната реакция те прави уязвим за следващата атака." 
-      }
-    ]
-  },
-  {
-    id: 103,
-    type: 'Инвестиционна измама',
-    difficulty: 'Трудно',
-    sender: 'Crypto_King_BG',
-    avatar: 'bg-purple-600',
-    initialMessage: "Брат, намерих брутален AI бот за търговия. Гарантира 40% печалба на ден! Трябват ти само 50 лв за старт. Виж скрийншота!",
-    clue: "Играят със скръндзата в теб (алчност). 'Гарантирана' печалба от 40% на ден е математически невъзможна.",
-    options: [
-      { 
-        id: 'a', 
-        text: "Ето 50 лв, давай да пробваме", 
-        outcome: "fail", 
-        feedback: "Парите изгоряха. Това е Понци схема. Ще ти поискат още такси, за да си 'теглиш' печалбата." 
-      },
-      { 
-        id: 'b', 
-        text: "Я прати сорс кода да го видя", 
-        outcome: "neutral", 
-        feedback: "Пратиха ти фалшив файл, който може да е вирус. Не се занимавай с оферти 'твърде хубаво, за да е истина'." 
-      },
-      { 
-        id: 'c', 
-        text: "Блок и Репорт", 
-        outcome: "success", 
-        feedback: "Перфектно. Няма безплатен обяд. Блокирането те пази от последващи манипулации." 
-      }
-    ]
-  },
-  {
-    id: 104,
-    type: 'Техническа поддръжка',
-    difficulty: 'Лесно',
-    sender: 'System Security Alert',
-    avatar: 'bg-red-700',
-    initialMessage: "КРИТИЧНА ГРЕШКА: Устройството е заразено с 38 вируса! Обадете се на 0800-MICROSOFT веднага, за да спасите данните си.",
-    clue: "Използват страх. Истинските антивирусни програми просто трият вируса, не те карат да звъниш по телефона.",
-    options: [
-      { 
-        id: 'a', 
-        text: "Звъня на номера", 
-        outcome: "fail", 
-        feedback: "Попадна в кол-център на измамници. Ще те накарат да инсталираш софтуер и ще ти източат сметките." 
-      },
-      { 
-        id: 'b', 
-        text: "Затварям прозореца (X)", 
-        outcome: "success", 
-        feedback: "Правилно. Това е просто изскачащ прозорец (scareware). Компютърът ти е наред." 
-      },
-      { 
-        id: 'c', 
-        text: "Тегля тула за поправка", 
-        outcome: "fail", 
-        feedback: "Току-що си инсталира истински вирус, маскиран като 'поправка'." 
-      }
-    ]
-  }
-];
+import { SCENARIOS } from './scenarios';
 
 export default function PhishGuardApp() {
   // --- Game State ---
@@ -175,8 +56,8 @@ export default function PhishGuardApp() {
   };
 
   const loadRandomScenario = () => {
-    const randomIndex = Math.floor(Math.random() * SCENARIO_DB.length);
-    const scenario = SCENARIO_DB[randomIndex];
+    const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
+    const scenario = SCENARIOS[randomIndex];
     
     setCurrentScenario(scenario);
     setChatHistory([{ 
@@ -257,7 +138,7 @@ export default function PhishGuardApp() {
       <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
         <div className="flex flex-col items-end">
-          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Бюджет</span>
+          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Портфейл</span>
           <div className={`flex items-center gap-1 font-mono font-bold text-sm sm:text-base ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
