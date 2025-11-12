@@ -256,7 +256,7 @@ export default function PhishGuardApp() {
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
-                  <div className="text-[14px] sm:text-[14px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                  <div className="text-[12px] sm:text-[11px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
                     <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
