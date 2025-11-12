@@ -46,6 +46,16 @@ export default function PhishGuardApp() {
     }
   }, [chatHistory, feedback]);
 
+  // Utility: Fisher-Yates shuffle algorithm
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   // Initialize Game
   const startGame = () => {
     setWallet(100);
@@ -59,7 +69,13 @@ export default function PhishGuardApp() {
     const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
     const scenario = SCENARIOS[randomIndex];
     
-    setCurrentScenario(scenario);
+    // Shuffle the options for randomization
+    const scenarioWithShuffledOptions = {
+      ...scenario,
+      options: shuffleArray(scenario.options)
+    };
+    
+    setCurrentScenario(scenarioWithShuffledOptions);
     setChatHistory([{ 
       role: 'bot', 
       text: scenario.initialMessage, 
