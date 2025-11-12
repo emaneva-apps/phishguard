@@ -161,8 +161,10 @@ export default function PhishGuardApp() {
       <div className="absolute bottom-10 right-10 text-slate-800 w-48 h-48"><Lock className="w-full h-full opacity-20"/></div>
 
       <div className="relative group">
-        <div className="absolute -inset-8 bg-cyan-500/40 rounded-full blur-3xl animate-pulse"></div>
-        <Shield className="w-32 h-32 text-cyan-400 relative z-10 drop-shadow-[0_0_25px_rgba(34,211,238,0.9)]" />
+        <div className="absolute -inset-12 bg-cyan-500/50 rounded-full blur-[80px] animate-pulse"></div>
+        <div className="absolute -inset-8 bg-cyan-400/60 rounded-full blur-[60px] animate-pulse" style={{animationDuration: '1.5s'}}></div>
+        <div className="absolute -inset-4 bg-cyan-300/40 rounded-full blur-xl animate-pulse" style={{animationDuration: '2s'}}></div>
+        <Shield className="w-32 h-32 text-cyan-400 relative z-10 drop-shadow-[0_0_40px_rgba(34,211,238,1)] filter brightness-110" />
       </div>
       
       <div className="space-y-4 max-w-xs relative z-10">
