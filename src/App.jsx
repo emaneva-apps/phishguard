@@ -46,16 +46,6 @@ export default function PhishGuardApp() {
     }
   }, [chatHistory, feedback]);
 
-  // Utility: Fisher-Yates shuffle algorithm
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
   // Initialize Game
   const startGame = () => {
     setWallet(100);
@@ -69,13 +59,7 @@ export default function PhishGuardApp() {
     const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
     const scenario = SCENARIOS[randomIndex];
     
-    // Shuffle the options for randomization
-    const scenarioWithShuffledOptions = {
-      ...scenario,
-      options: shuffleArray(scenario.options)
-    };
-    
-    setCurrentScenario(scenarioWithShuffledOptions);
+    setCurrentScenario(scenario);
     setChatHistory([{ 
       role: 'bot', 
       text: scenario.initialMessage, 
@@ -154,7 +138,7 @@ export default function PhishGuardApp() {
       <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
         <div className="flex flex-col items-end">
-          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Портфейл</span>
+          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">ПОРТФЕЙЛ</span>
           <div className={`flex items-center gap-1 font-mono font-bold text-sm sm:text-base ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
