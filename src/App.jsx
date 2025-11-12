@@ -139,7 +139,7 @@ export default function PhishGuardApp() {
         {/* Wallet / HP */}
         <div className="flex flex-col items-end">
           <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">ПОРТФЕЙЛ</span>
-          <div className={`flex items-baseline gap-1 font-mono font-bold text-sm sm:text-base ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
+          <div className={`flex items-baseline gap-1 font-mono font-bold text-sm sm:text-sm ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
         </div>
