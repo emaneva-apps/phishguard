@@ -35,6 +35,7 @@ export default function PhishGuardApp() {
   const [feedback, setFeedback] = useState(null); // null or object { type, text }
   const [showClue, setShowClue] = useState(false);
   const [isScenarioComplete, setIsScenarioComplete] = useState(false);
+  const [usedScenarioIds, setUsedScenarioIds] = useState([]);
 
   // --- Utils ---
   const scrollRef = useRef(null);
@@ -51,13 +52,26 @@ export default function PhishGuardApp() {
     setWallet(100);
     setReputation(0);
     setLevel(1);
+    setUsedScenarioIds([]);
     loadRandomScenario();
     setScreen('game');
   };
 
   const loadRandomScenario = () => {
-    const randomIndex = Math.floor(Math.random() * SCENARIOS.length);
-    const scenario = SCENARIOS[randomIndex];
+    // Filter out already used scenarios
+    const availableScenarios = SCENARIOS.filter(s => !usedScenarioIds.includes(s.id));
+    
+    // If all scenarios have been used, reset and start over
+    if (availableScenarios.length === 0) {
+      setUsedScenarioIds([]);
+      return loadRandomScenario();
+    }
+    
+    const randomIndex = Math.floor(Math.random() * availableScenarios.length);
+    const scenario = availableScenarios[randomIndex];
+    
+    // Mark this scenario as used
+    setUsedScenarioIds(prev => [...prev, scenario.id]);
     
     // Shuffle options using Fisher-Yates algorithm
     const shuffledOptions = [...scenario.options];
