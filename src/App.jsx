@@ -272,7 +272,7 @@ export default function PhishGuardApp() {
             <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
               feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
               feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
-              'bg-yellow-950/50 border-yellow-500/50 text-yellow-100'
+              'bg-yellow-700/70 border-yellow-400 text-yellow-50'
             }`}>
               <div className="flex items-center gap-2 font-bold mb-1 text-xs sm:text-sm uppercase tracking-wider">
                 {feedback.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0"/> : <XCircle className="w-4 h-4 shrink-0"/>}
