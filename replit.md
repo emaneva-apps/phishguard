@@ -30,6 +30,7 @@ PhishGuard is an interactive cybersecurity training game designed to teach users
   - XP/Reputation system (goal: 2000 XP to become "Кибер Страж")
   - Hint system (clue feature)
   - Multiple choice responses to threats
+  - **Randomized answer order**: Options (a, b, c) appear in random order each time using Fisher-Yates shuffle algorithm
 - **Educational Feedback**: Immediate feedback on choices with explanations
 
 ## Development
@@ -70,6 +71,10 @@ The application is configured for Replit's autoscale deployment:
     - Made all UI elements responsive (buttons, text sizes, spacing)
     - Fixed viewport height constraints for proper display on all screen sizes
     - Added breakpoint-specific text sizes and spacing for better mobile experience
+  - **Answer Randomization Feature**:
+    - Implemented Fisher-Yates shuffle algorithm for randomizing answer options
+    - Modified loadRandomScenario to shuffle options without mutating original SCENARIOS data
+    - Each scenario now presents answer choices (a, b, c) in random order to enhance learning
 
 ## Technical Notes
 - The app is a single-page application with no backend
