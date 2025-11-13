@@ -178,8 +178,8 @@ export default function PhishGuardApp() {
   const RenderHome = () => (
     <div className="h-full flex flex-col items-center justify-center p-6 text-center space-y-8 animate-in fade-in zoom-in duration-500 relative overflow-hidden">
       {/* Background elements */}
-      <div className="absolute top-10 left-10 text-slate-800 w-32 h-32"><Shield className="w-full h-full opacity-20"/></div>
-      <div className="absolute bottom-10 right-10 text-slate-800 w-48 h-48"><Lock className="w-full h-full opacity-20"/></div>
+      {/*<div className="absolute top-10 left-10 text-slate-800 w-32 h-32"><Shield className="w-full h-full opacity-20"/></div> 
+      <div className="absolute bottom-10 right-10 text-slate-800 w-48 h-48"><Lock className="w-full h-full opacity-20"/></div>*/}
 
       <div className="relative group">
         <div className="absolute -inset-12 bg-cyan-500/50 rounded-full blur-[80px] animate-pulse"></div>
@@ -270,7 +270,7 @@ export default function PhishGuardApp() {
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
-                  <div className="text-[12px] sm:text-[11px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                  <div className="text-[11px] sm:text-[11px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
                     <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
