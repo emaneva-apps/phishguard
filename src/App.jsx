@@ -37,7 +37,6 @@ export default function CyberGuardApp() {
   const [isScenarioComplete, setIsScenarioComplete] = useState(false);
   const [usedScenarioIds, setUsedScenarioIds] = useState([]);
   const [animations, setAnimations] = useState([]);
-  const [particles, setParticles] = useState([]);
 
   // --- Utils ---
   const scrollRef = useRef(null);
@@ -133,19 +132,6 @@ export default function CyberGuardApp() {
       setTimeout(() => {
         setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
       }, 2000);
-
-      // Generate dollar particles
-      const newParticles = Array.from({ length: 15 }, (_, i) => ({
-        id: Date.now() + Math.random() + i,
-        type: 'dollar',
-        x: Math.random() * 100 - 50,
-        y: Math.random() * 100 - 50,
-        delay: Math.random() * 0.3
-      }));
-      setParticles(prev => [...prev, ...newParticles]);
-      setTimeout(() => {
-        setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
-      }, 4000);
     }
     
     if (xpGain > 0) {
@@ -162,19 +148,6 @@ export default function CyberGuardApp() {
       setTimeout(() => {
         setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
       }, 2000);
-
-      // Generate sparkle particles
-      const newParticles = Array.from({ length: 20 }, (_, i) => ({
-        id: Date.now() + Math.random() + i,
-        type: 'sparkle',
-        x: Math.random() * 100 - 50,
-        y: Math.random() * 100 - 50,
-        delay: Math.random() * 0.3
-      }));
-      setParticles(prev => [...prev, ...newParticles]);
-      setTimeout(() => {
-        setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
-      }, 4000);
     }
 
     // 4. Check for Victory
@@ -475,26 +448,6 @@ export default function CyberGuardApp() {
             }}
           >
             +{anim.value}
-          </div>
-        ))}
-        
-        {/* Particles */}
-        {particles.map(particle => (
-          <div
-            key={particle.id}
-            className={`absolute text-3xl sm:text-5xl ${
-              particle.type === 'dollar' 
-                ? 'text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]' 
-                : 'text-purple-400 drop-shadow-[0_0_15px_rgba(192,132,252,1)]'
-            }`}
-            style={{
-              left: `calc(50% + ${particle.x}px)`,
-              top: `calc(50% + ${particle.y}px)`,
-              animation: `particleFloat 4s ease-out forwards`,
-              animationDelay: `${particle.delay}s`
-            }}
-          >
-            {particle.type === 'dollar' ? '💵' : '✨'}
           </div>
         ))}
       </div>
