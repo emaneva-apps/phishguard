@@ -36,6 +36,7 @@ export default function PhishGuardApp() {
   const [showClue, setShowClue] = useState(false);
   const [isScenarioComplete, setIsScenarioComplete] = useState(false);
   const [usedScenarioIds, setUsedScenarioIds] = useState([]);
+  const [animations, setAnimations] = useState([]);
 
   // --- Utils ---
   const scrollRef = useRef(null);
@@ -117,14 +118,40 @@ export default function PhishGuardApp() {
     setFeedback({ type: fbType, text: option.feedback });
     setIsScenarioComplete(true);
 
-    // 3. Apply Updates
-    setWallet(prev => Math.max(0, prev - walletDmg));
+    // 3. Apply Updates & Trigger Animations
+    if (walletDmg > 0) {
+      setWallet(prev => Math.max(0, prev - walletDmg));
+      // Add wallet damage animation
+      const walletAnim = {
+        id: Date.now() + Math.random(),
+        type: 'wallet',
+        value: -walletDmg,
+        color: fbType === 'danger' ? 'text-red-500' : 'text-yellow-500'
+      };
+      setAnimations(prev => [...prev, walletAnim]);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
+      }, 2000);
+    }
     
-    const newReputation = reputation + xpGain;
-    setReputation(newReputation);
+    if (xpGain > 0) {
+      const newReputation = reputation + xpGain;
+      setReputation(newReputation);
+      // Add XP gain animation
+      const xpAnim = {
+        id: Date.now() + Math.random(),
+        type: 'xp',
+        value: xpGain,
+        color: 'text-purple-400'
+      };
+      setAnimations(prev => [...prev, xpAnim]);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
+      }, 2000);
+    }
 
     // 4. Check for Victory
-    if (newReputation >= 2000) {
+    if (reputation + xpGain >= 2000) {
       setTimeout(() => {
         setScreen('victory');
       }, 2000);
@@ -145,7 +172,7 @@ export default function PhishGuardApp() {
   // --- Renders ---
 
   const RenderHeader = () => (
-    <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg">
+    <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg relative">
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="bg-cyan-500/20 p-1.5 sm:p-2 rounded-lg">
           <Shield className="w-5 h-5 sm:w-10 sm:h-10 text-cyan-400" />
@@ -158,18 +185,42 @@ export default function PhishGuardApp() {
       
       <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end relative">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">ПОРТФЕЙЛ</span>
           <div className={`flex items-baseline gap-1 font-mono font-bold text-lg xl:text-xl ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
+          {/* Wallet damage animations */}
+          {animations.filter(a => a.type === 'wallet').map(anim => (
+            <div 
+              key={anim.id}
+              className={`absolute -top-8 right-0 font-black text-2xl ${anim.color} pointer-events-none animate-float-up-fade font-mono drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]`}
+              style={{
+                animation: 'floatUpFade 2s ease-out forwards'
+              }}
+            >
+              {anim.value}%
+            </div>
+          ))}
         </div>
         {/* XP */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end relative">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">XP</span>
           <div className="flex items-baseline gap-1 font-mono font-bold text-purple-400 text-lg xl:text-xl">
             {reputation} / 2000
           </div>
+          {/* XP gain animations */}
+          {animations.filter(a => a.type === 'xp').map(anim => (
+            <div 
+              key={anim.id}
+              className={`absolute -top-8 right-0 font-black text-3xl ${anim.color} pointer-events-none font-mono drop-shadow-[0_0_15px_rgba(192,132,252,1)]`}
+              style={{
+                animation: 'floatUpFade 2s ease-out forwards, pulse 0.5s ease-in-out 3'
+              }}
+            >
+              +{anim.value}
+            </div>
+          ))}
         </div>
       </div>
     </div>
