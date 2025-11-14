@@ -185,42 +185,18 @@ export default function PhishGuardApp() {
       
       <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
-        <div className="flex flex-col items-end relative">
+        <div className="flex flex-col items-end">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">ПОРТФЕЙЛ</span>
           <div className={`flex items-baseline gap-1 font-mono font-bold text-lg xl:text-xl ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
-          {/* Wallet damage animations */}
-          {animations.filter(a => a.type === 'wallet').map(anim => (
-            <div 
-              key={anim.id}
-              className={`absolute -top-8 right-0 font-black text-2xl ${anim.color} pointer-events-none animate-float-up-fade font-mono drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]`}
-              style={{
-                animation: 'floatUpFade 2s ease-out forwards'
-              }}
-            >
-              {anim.value}%
-            </div>
-          ))}
         </div>
         {/* XP */}
-        <div className="flex flex-col items-end relative">
+        <div className="flex flex-col items-end">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">XP</span>
           <div className="flex items-baseline gap-1 font-mono font-bold text-purple-400 text-lg xl:text-xl">
             {reputation} / 2000
           </div>
-          {/* XP gain animations */}
-          {animations.filter(a => a.type === 'xp').map(anim => (
-            <div 
-              key={anim.id}
-              className={`absolute -top-8 right-0 font-black text-3xl ${anim.color} pointer-events-none font-mono drop-shadow-[0_0_15px_rgba(192,132,252,1)]`}
-              style={{
-                animation: 'floatUpFade 2s ease-out forwards, pulse 0.5s ease-in-out 3'
-              }}
-            >
-              +{anim.value}
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -447,6 +423,34 @@ export default function PhishGuardApp() {
         {screen === 'victory' && <RenderVictory />}
         {screen === 'result' && <RenderResult />}
       </main>
+      
+      {/* Centered Animations */}
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50">
+        {/* Wallet damage animations */}
+        {animations.filter(a => a.type === 'wallet').map(anim => (
+          <div 
+            key={anim.id}
+            className={`absolute font-black text-6xl sm:text-8xl ${anim.color} font-mono drop-shadow-[0_0_30px_rgba(239,68,68,1)]`}
+            style={{
+              animation: 'floatUpFadeBig 4s ease-out forwards'
+            }}
+          >
+            {anim.value}%
+          </div>
+        ))}
+        {/* XP gain animations */}
+        {animations.filter(a => a.type === 'xp').map(anim => (
+          <div 
+            key={anim.id}
+            className={`absolute font-black text-7xl sm:text-9xl ${anim.color} font-mono drop-shadow-[0_0_40px_rgba(192,132,252,1)]`}
+            style={{
+              animation: 'floatUpFadeBig 4s ease-out forwards, pulse 0.8s ease-in-out 3'
+            }}
+          >
+            +{anim.value}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
