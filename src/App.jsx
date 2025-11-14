@@ -22,7 +22,7 @@ import {
 
 import { SCENARIOS } from './scenarios';
 
-export default function PhishGuardApp() {
+export default function CyberGuardApp() {
   // --- Game State ---
   const [screen, setScreen] = useState('home'); // home, game, result, victory
   const [wallet, setWallet] = useState(100);
@@ -178,7 +178,7 @@ export default function PhishGuardApp() {
           <Shield className="w-5 h-5 sm:w-10 sm:h-10 text-cyan-400" />
         </div>
         <div>
-          <h1 className="font-black text-lg sm:text-lg text-white tracking-wide leading-none">PHISH<span className="text-cyan-400">GUARD</span></h1>
+          <h1 className="font-black text-lg sm:text-lg text-white tracking-wide leading-none">CYBER<span className="text-cyan-400">GUARD</span></h1>
           <p className="text-[9px] sm:text-lg text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
