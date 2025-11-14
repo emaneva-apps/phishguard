@@ -286,18 +286,18 @@ export default function PhishGuardApp() {
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               
               {msg.role === 'bot' && (
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-xs sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-bas sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
                   {msg.role === 'bot' ? '?' : 'АЗ'}
                 </div>
               )}
 
-              <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-xs sm:text-sm leading-relaxed shadow-md break-words ${
+              <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-base sm:text-base leading-relaxed shadow-md break-words ${
                 msg.role === 'user' 
                   ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm' 
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
-                  <div className="text-[11px] sm:text-[11px] text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                  <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
                     <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
@@ -315,11 +315,11 @@ export default function PhishGuardApp() {
               feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
               'bg-yellow-700/70 border-yellow-400 text-yellow-50'
             }`}>
-              <div className="flex items-center gap-2 font-bold mb-1 text-xs sm:text-sm uppercase tracking-wider">
+              <div className="flex items-center gap-2 font-bold mb-1 text-sm sm:text-sm uppercase tracking-wider">
                 {feedback.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0"/> : <XCircle className="w-4 h-4 shrink-0"/>}
-                <span className="break-words">{feedback.type === 'success' ? 'ЗАПЛАХАТА НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}</span>
+                <span className="break-words">{feedback.type === 'success' ? 'ЗАПЛАХАТА E НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}</span>
               </div>
-              <p className="text-xs sm:text-sm opacity-90 break-words">{feedback.text}</p>
+              <p className="text-base sm:text-base opacity-90 break-words">{feedback.text}</p>
             </div>
           )}
         </div>
@@ -385,7 +385,7 @@ export default function PhishGuardApp() {
       
       <div className="space-y-2">
         <h2 className="text-3xl font-black text-white tracking-tight">
-          СИСТЕМАТА КОМПРОМЕТИРАНА
+          СИСТЕМАТА Е КОМПРОМЕТИРАНА
         </h2>
         <p className="text-slate-400 max-w-xs mx-auto">
           Твоите кредити свършиха. Измамниците победиха този път.
