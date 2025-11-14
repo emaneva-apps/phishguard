@@ -217,9 +217,9 @@ export default function PhishGuardApp() {
       
       <div className="space-y-4 max-w-xs relative z-10">
         <h2 className="text-3xl font-black text-white uppercase">Търсим Агенти</h2>
-        <p className="text-slate-400 text-sm">
+        <p className="text-slate-400 text-base">
           Разпознай измамата. Запази парите.<br/>
-          Събери <span className="text-purple-400 font-bold">2000 XP</span>, за да станеш Кибер Страж.
+          Събери <span className="text-purple-400 font-bold">2000 XP</span>,<br/> за да станеш Кибер Страж.
         </p>
       </div>
 
@@ -257,7 +257,7 @@ export default function PhishGuardApp() {
         </div>
         
         <div className="bg-slate-800/80 backdrop-blur-sm border border-amber-500/30 p-6 rounded-xl shadow-2xl">
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-base leading-relaxed">
             Демонстрира изключителни умения за засичане на заплахи. Вече си сертифициран защитник на мрежата.
           </p>
           <div className="mt-4 flex items-center justify-center gap-2 text-amber-400 font-mono font-bold text-xl">
@@ -330,7 +330,7 @@ export default function PhishGuardApp() {
           {!isScenarioComplete ? (
             <div className="space-y-2 sm:space-y-3">
               <div className="flex justify-between items-center px-1 gap-2">
-                <span className="text-[9px] sm:text-[10px] text-green-400 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
+                <span className="text-base sm:text-base text-green-400 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
                 <button 
                   onClick={() => setShowClue(!showClue)}
                   className="text-[11px] sm:text-sm flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap"
@@ -342,7 +342,7 @@ export default function PhishGuardApp() {
               </div>
               
               {showClue && (
-                <div className="bg-purple-900/20 border border-purple-500/30 p-2 sm:p-3 rounded-lg text-[11px] sm:text-xs text-purple-200 italic flex gap-2 animate-in fade-in">
+                <div className="bg-purple-900/20 border border-purple-500/30 p-2 sm:p-3 rounded-lg text-base sm:text-base text-purple-200 italic flex gap-2 animate-in fade-in">
                   <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 text-purple-400 mt-0.5" />
                   <div className="break-words">{currentScenario.clue}</div>
                 </div>
@@ -353,7 +353,7 @@ export default function PhishGuardApp() {
                   <button
                     key={opt.id}
                     onClick={() => handleChoice(opt)}
-                    className="w-full text-left p-2.5 sm:p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-xs sm:text-sm text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group"
+                    className="w-full text-left p-2.5 sm:p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-base sm:text-base text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group"
                   >
                     <span className="text-cyan-500 font-mono mr-2 opacity-50 group-hover:opacity-100">&gt;</span>
                     <span className="break-words">{opt.text}</span>
