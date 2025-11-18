@@ -216,7 +216,7 @@ export default function CyberGuardApp() {
       </div>
       
       <div className="space-y-4 max-w-xs relative z-10">
-        <h2 className="text-3xl font-black text-white uppercase">Търсим Агенти</h2>
+        <h2 className="text-3xl font-black text-white uppercase">СТАНИ<br/>КИБЕР СТРАЖ</h2>
         <p className="text-slate-400 text-base">
           Разпознай измамата. Запази парите.<br/>
           Събери <span className="text-purple-400 font-bold">2000 XP</span>,<br/> за да станеш Кибер Страж.
