@@ -43,18 +43,9 @@ export default function CyberGuardApp() {
 
   // Auto-scroll
   useEffect(() => {
-    // We use a small timeout to ensure the DOM has updated and painted the new height
-    // This prevents the "jump" where the browser tries to anchor scroll before the element is ready
-    const timer = setTimeout(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({
-          top: scrollRef.current.scrollHeight,
-          behavior: 'smooth' // Smooth scrolling makes the UI feel stable
-        });
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [chatHistory, feedback]);
 
   // Initialize Game
@@ -308,7 +299,7 @@ export default function CyberGuardApp() {
                 {msg.role === 'bot' && (
                   <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
-                    <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
+                    <span className="break-all">ОТ: {msg.sender}</span>
                   </div>
                 )}
                 <div className="whitespace-pre-wrap break-words">{msg.text}</div>
@@ -319,7 +310,7 @@ export default function CyberGuardApp() {
 
           {/* Feedback Overlay Bubble */}
           {feedback && (
-            <div className={`p-3 sm:p-4 w-full rounded-xl border animate-in fade-in zoom-in-95 duration-300 ${
+            <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
               feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
               feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
               'bg-yellow-700/70 border-yellow-400 text-yellow-50'
