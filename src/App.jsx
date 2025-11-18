@@ -423,34 +423,36 @@ export default function CyberGuardApp() {
         {screen === 'victory' && <RenderVictory />}
         {screen === 'result' && <RenderResult />}
       </main>
-      
-      {/* Centered Animations */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50">
-        {/* Wallet damage animations */}
-        {animations.filter(a => a.type === 'wallet').map(anim => (
-          <div 
-            key={anim.id}
-            className={`absolute font-black text-6xl sm:text-8xl ${anim.color} font-mono drop-shadow-[0_0_30px_rgba(239,68,68,1)]`}
-            style={{
-              animation: 'floatUpFadeBig 4s ease-out forwards'
-            }}
-          >
-            {anim.value}%
-          </div>
-        ))}
-        {/* XP gain animations */}
-        {animations.filter(a => a.type === 'xp').map(anim => (
-          <div 
-            key={anim.id}
-            className={`absolute font-black text-7xl sm:text-9xl ${anim.color} font-mono drop-shadow-[0_0_40px_rgba(192,132,252,1)]`}
-            style={{
-              animation: 'floatUpFadeBig 4s ease-out forwards, pulse 0.8s ease-in-out 3'
-            }}
-          >
-            +{anim.value}
-          </div>
-        ))}
+
+      {/* === FIXED FLYING ANIMATIONS OVERLAY === */}
+      <div className="fixed inset-0 pointer-events-none z-50">
+        <div className="relative w-full h-full">
+          {/* Wallet damage animations */}
+          {animations
+            .filter(a => a.type === 'wallet')
+            .map(anim => (
+              <div
+                key={anim.id}
+                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-6xl sm:text-8xl ${anim.color} font-mono animate-floatUpFadeBig`}
+              >
+                {anim.value}%
+              </div>
+            ))}
+
+          {/* XP gain animations */}
+          {animations
+            .filter(a => a.type === 'xp')
+            .map(anim => (
+              <div
+                key={anim.id}
+                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-7xl sm:text-9xl ${anim.color} font-mono animate-floatUpFadeBig animate-pulse`}
+              >
+                +{anim.value}
+              </div>
+            ))}
+        </div>
       </div>
+      {/* === END FIXED OVERLAY === */}
     </div>
   );
 }
