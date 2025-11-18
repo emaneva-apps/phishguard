@@ -310,7 +310,7 @@ export default function CyberGuardApp() {
 
           {/* Feedback Overlay Bubble */}
           {feedback && (
-            <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
+            <div className={`p-3 sm:p-4 rounded-xl border ${
               feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
               feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
               'bg-yellow-700/70 border-yellow-400 text-yellow-50'
