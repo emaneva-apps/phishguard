@@ -299,7 +299,7 @@ export default function CyberGuardApp() {
                 {msg.role === 'bot' && (
                   <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
-                    <span className="break-all">ОТ: {msg.sender}</span>
+                    <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
                   </div>
                 )}
                 <div className="whitespace-pre-wrap break-words">{msg.text}</div>
@@ -424,33 +424,37 @@ export default function CyberGuardApp() {
         {screen === 'result' && <RenderResult />}
       </main>
 
-      {/* Centered Animations */}
-      <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden">
-        {/* Wallet damage animations */}
-        {animations.filter(a => a.type === 'wallet').map(anim => (
-          <div 
-            key={anim.id}
-            className={`absolute font-black text-6xl sm:text-8xl ${anim.color} font-mono drop-shadow-[0_0_30px_rgba(239,68,68,1)]`}
-            style={{
-              animation: 'floatUpFadeBig 4s ease-out forwards'
-            }}
-          >
-            {anim.value}%
-          </div>
-        ))}
-        {/* XP gain animations */}
-        {animations.filter(a => a.type === 'xp').map(anim => (
-          <div 
-            key={anim.id}
-            className={`absolute font-black text-7xl sm:text-9xl ${anim.color} font-mono drop-shadow-[0_0_40px_rgba(192,132,252,1)]`}
-            style={{
-              animation: 'floatUpFadeBig 4s ease-out forwards, pulse 0.8s ease-in-out 3'
-            }}
-          >
-            +{anim.value}
-          </div>
-        ))}
-      </div>
+      {/* Centered Animations - Completely isolated from layout */}
+      {animations.filter(a => a.type === 'wallet').map(anim => (
+        <div 
+          key={anim.id}
+          className={`fixed font-black text-6xl sm:text-8xl ${anim.color} font-mono drop-shadow-[0_0_30px_rgba(239,68,68,1)] pointer-events-none z-50`}
+          style={{
+            animation: 'floatUpFadeBig 4s ease-out forwards',
+            top: '50%',
+            left: '50%',
+            marginLeft: '-3ch',
+            marginTop: '-0.5em'
+          }}
+        >
+          {anim.value}%
+        </div>
+      ))}
+      {animations.filter(a => a.type === 'xp').map(anim => (
+        <div 
+          key={anim.id}
+          className={`fixed font-black text-7xl sm:text-9xl ${anim.color} font-mono drop-shadow-[0_0_40px_rgba(192,132,252,1)] pointer-events-none z-50`}
+          style={{
+            animation: 'floatUpFadeBig 4s ease-out forwards, pulse 0.8s ease-in-out 3',
+            top: '50%',
+            left: '50%',
+            marginLeft: '-2.5ch',
+            marginTop: '-0.5em'
+          }}
+        >
+          +{anim.value}
+        </div>
+      ))}
     </div>
   );
 }
