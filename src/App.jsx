@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Shield,
-  MessageCircle,
-  AlertTriangle,
-  Award,
-  BookOpen,
-  Send,
-  Smartphone,
+import { 
+  Shield, 
+  MessageCircle, 
+  AlertTriangle, 
+  Award, 
+  BookOpen, 
+  Send, 
+  Smartphone, 
   XCircle,
   CheckCircle2,
   Lock,
@@ -19,7 +19,7 @@ import {
   Star,
   Crown
 } from 'lucide-react';
-import { createPortal } from 'react-dom'; // ← THIS IS THE KEY IMPORT
+
 import { SCENARIOS } from './scenarios';
 
 export default function CyberGuardApp() {
@@ -28,11 +28,11 @@ export default function CyberGuardApp() {
   const [wallet, setWallet] = useState(100);
   const [reputation, setReputation] = useState(0);
   const [level, setLevel] = useState(1);
-
+  
   // --- Scenario State ---
   const [currentScenario, setCurrentScenario] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState(null); // null or object { type, text }
   const [showClue, setShowClue] = useState(false);
   const [isScenarioComplete, setIsScenarioComplete] = useState(false);
   const [usedScenarioIds, setUsedScenarioIds] = useState([]);
@@ -59,26 +59,32 @@ export default function CyberGuardApp() {
   };
 
   const loadRandomScenario = () => {
+    // Filter out already used scenarios
     const availableScenarios = SCENARIOS.filter(s => !usedScenarioIds.includes(s.id));
+    
+    // If all scenarios have been used, reset and start over
     if (availableScenarios.length === 0) {
       setUsedScenarioIds([]);
       return loadRandomScenario();
     }
-
+    
     const randomIndex = Math.floor(Math.random() * availableScenarios.length);
     const scenario = availableScenarios[randomIndex];
+    
+    // Mark this scenario as used
     setUsedScenarioIds(prev => [...prev, scenario.id]);
-
+    
+    // Shuffle options using Fisher-Yates algorithm
     const shuffledOptions = [...scenario.options];
     for (let i = shuffledOptions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
     }
-
+    
     setCurrentScenario({...scenario, options: shuffledOptions});
-    setChatHistory([{
-      role: 'bot',
-      text: scenario.initialMessage,
+    setChatHistory([{ 
+      role: 'bot', 
+      text: scenario.initialMessage, 
       sender: scenario.sender,
       avatar: scenario.avatar
     }]);
@@ -88,6 +94,7 @@ export default function CyberGuardApp() {
   };
 
   const handleChoice = (option) => {
+    // 1. Add User Bubble
     const newHistory = [...chatHistory, { role: 'user', text: option.text }];
     setChatHistory(newHistory);
 
@@ -95,8 +102,10 @@ export default function CyberGuardApp() {
     let walletDmg = 0;
     let fbType = 'neutral';
 
+    // 2. Analyze Outcome
     if (option.outcome === 'success') {
-      xpGain = 500;
+      // 500 XP for fast demo (usually 100)
+      xpGain = 500; 
       fbType = 'success';
     } else if (option.outcome === 'neutral') {
       walletDmg = 10;
@@ -109,8 +118,10 @@ export default function CyberGuardApp() {
     setFeedback({ type: fbType, text: option.feedback });
     setIsScenarioComplete(true);
 
+    // 3. Apply Updates & Trigger Animations
     if (walletDmg > 0) {
       setWallet(prev => Math.max(0, prev - walletDmg));
+      // Add wallet damage animation
       const walletAnim = {
         id: Date.now() + Math.random(),
         type: 'wallet',
@@ -118,12 +129,15 @@ export default function CyberGuardApp() {
         color: fbType === 'danger' ? 'text-red-500' : 'text-yellow-500'
       };
       setAnimations(prev => [...prev, walletAnim]);
-      setTimeout(() => setAnimations(prev => prev.filter(a => a.id !== walletAnim.id)), 2200);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
+      }, 2000);
     }
-
+    
     if (xpGain > 0) {
       const newReputation = reputation + xpGain;
       setReputation(newReputation);
+      // Add XP gain animation
       const xpAnim = {
         id: Date.now() + Math.random(),
         type: 'xp',
@@ -131,13 +145,20 @@ export default function CyberGuardApp() {
         color: 'text-purple-400'
       };
       setAnimations(prev => [...prev, xpAnim]);
-      setTimeout(() => setAnimations(prev => prev.filter(a => a.id !== xpAnim.id)), 2200);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
+      }, 2000);
     }
 
+    // 4. Check for Victory
     if (reputation + xpGain >= 2000) {
-      setTimeout(() => setScreen('victory'), 2200);
+      setTimeout(() => {
+        setScreen('victory');
+      }, 2000);
     } else if (wallet - walletDmg <= 0) {
-      setTimeout(() => setScreen('result'), 2200);
+       setTimeout(() => {
+        setScreen('result');
+      }, 2000);
     }
   };
 
@@ -148,9 +169,10 @@ export default function CyberGuardApp() {
     }
   };
 
-  // --- RENDERS ---
+  // --- Renders ---
+
   const RenderHeader = () => (
-    <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg">
+    <div className="bg-slate-900 p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 z-20 shadow-lg relative">
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="bg-cyan-500/20 p-1.5 sm:p-2 rounded-lg">
           <Shield className="w-5 h-5 sm:w-10 sm:h-10 text-cyan-400" />
@@ -160,13 +182,16 @@ export default function CyberGuardApp() {
           <p className="text-[9px] sm:text-lg text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
+      
       <div className="flex gap-2 sm:gap-3">
+        {/* Wallet / HP */}
         <div className="flex flex-col items-end">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">ПОРТФЕЙЛ</span>
           <div className={`flex items-baseline gap-1 font-mono font-bold text-lg xl:text-xl ${wallet < 30 ? 'text-red-500 animate-pulse' : 'text-green-400'}`}>
             {wallet}%
           </div>
         </div>
+        {/* XP */}
         <div className="flex flex-col items-end">
           <span className="text-[9px] sm:text-[18px] text-slate-400 uppercase font-bold">XP</span>
           <div className="flex items-baseline gap-1 font-mono font-bold text-purple-400 text-lg xl:text-xl">
@@ -179,12 +204,17 @@ export default function CyberGuardApp() {
 
   const RenderHome = () => (
     <div className="h-full flex flex-col items-center justify-center p-6 text-center space-y-8 animate-in fade-in zoom-in duration-500 relative overflow-hidden">
+      {/* Background elements */}
+      {/*<div className="absolute top-10 left-10 text-slate-800 w-32 h-32"><Shield className="w-full h-full opacity-20"/></div> 
+      <div className="absolute bottom-10 right-10 text-slate-800 w-48 h-48"><Lock className="w-full h-full opacity-20"/></div>*/}
+
       <div className="relative group">
         <div className="absolute -inset-12 bg-cyan-500/50 rounded-full blur-[80px] animate-pulse"></div>
         <div className="absolute -inset-8 bg-cyan-400/60 rounded-full blur-[60px] animate-pulse" style={{animationDuration: '1.5s'}}></div>
         <div className="absolute -inset-4 bg-cyan-300/40 rounded-full blur-xl animate-pulse" style={{animationDuration: '2s'}}></div>
         <Shield className="w-32 h-32 text-cyan-400 relative z-10 drop-shadow-[0_0_40px_rgba(34,211,238,1)] filter brightness-110" />
       </div>
+      
       <div className="space-y-4 max-w-xs relative z-10">
         <h2 className="text-3xl font-black text-white uppercase">СТАНИ<br/>КИБЕР СТРАЖ</h2>
         <p className="text-slate-400 text-base">
@@ -192,7 +222,11 @@ export default function CyberGuardApp() {
           Събери <span className="text-purple-400 font-bold">2000 XP</span>,<br/> за да станеш Кибер Страж.
         </p>
       </div>
-      <button onClick={startGame} className="w-full max-w-xs py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(8,145,178,0.4)] transition-all transform hover:scale-105 flex items-center justify-center gap-2 relative z-10 uppercase tracking-wider">
+
+      <button 
+        onClick={startGame}
+        className="w-full max-w-xs py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(8,145,178,0.4)] transition-all transform hover:scale-105 flex items-center justify-center gap-2 relative z-10 uppercase tracking-wider"
+      >
         <Smartphone className="w-5 h-5" /> Стартирай Симулация
       </button>
     </div>
@@ -200,9 +234,11 @@ export default function CyberGuardApp() {
 
   const RenderVictory = () => (
     <div className="h-full flex flex-col items-center justify-center p-6 text-center space-y-8 animate-in zoom-in duration-700 bg-slate-900">
+      {/* Gold Glow Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-amber-500/10 blur-3xl rounded-full animate-pulse"></div>
       </div>
+
       <div className="relative z-10">
         <div className="relative inline-block">
            <div className="absolute -inset-6 bg-amber-400 rounded-full opacity-30 blur-xl animate-pulse"></div>
@@ -211,6 +247,7 @@ export default function CyberGuardApp() {
            <Star className="w-6 h-6 text-yellow-200 absolute bottom-0 -left-4 animate-bounce delay-100" />
         </div>
       </div>
+      
       <div className="space-y-4 z-10 max-w-sm">
         <div className="space-y-2">
           <h2 className="text-xs font-bold text-amber-500 tracking-[0.3em] uppercase">Статус Потвърден</h2>
@@ -218,6 +255,7 @@ export default function CyberGuardApp() {
             КИБЕР АГЕНТ
           </h1>
         </div>
+        
         <div className="bg-slate-800/80 backdrop-blur-sm border border-amber-500/30 p-6 rounded-xl shadow-2xl">
           <p className="text-slate-300 text-base leading-relaxed">
             Демонстрира изключителни умения за засичане на заплахи. Вече си сертифициран защитник на мрежата.
@@ -227,7 +265,11 @@ export default function CyberGuardApp() {
           </div>
         </div>
       </div>
-      <button onClick={startGame} className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white rounded-full font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all transform hover:scale-105 flex items-center gap-2 relative z-10 uppercase">
+
+      <button 
+        onClick={startGame}
+        className="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white rounded-full font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all transform hover:scale-105 flex items-center gap-2 relative z-10 uppercase"
+      >
         <RefreshCw className="w-5 h-5" /> Нова Мисия
       </button>
     </div>
@@ -235,19 +277,23 @@ export default function CyberGuardApp() {
 
   const RenderGame = () => {
     if (!currentScenario) return null;
+
     return (
       <div className="flex flex-col h-full w-full max-w-2xl mx-auto bg-slate-950 relative">
+        {/* Chat Area */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[280px] sm:pb-[320px]">
           {chatHistory.map((msg, idx) => (
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              
               {msg.role === 'bot' && (
                 <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-bas sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
-                  ?
+                  {msg.role === 'bot' ? '?' : 'АЗ'}
                 </div>
               )}
+
               <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-base sm:text-base leading-relaxed shadow-md break-words ${
-                msg.role === 'user'
-                  ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm'
+                msg.role === 'user' 
+                  ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm' 
                   : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
               }`}>
                 {msg.role === 'bot' && (
@@ -258,10 +304,13 @@ export default function CyberGuardApp() {
                 )}
                 <div className="whitespace-pre-wrap break-words">{msg.text}</div>
               </div>
+
             </div>
           ))}
+
+          {/* Feedback Overlay Bubble */}
           {feedback && (
-            <div className={`p-3 sm:p-4 rounded-xl border ${
+            <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
               feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
               feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
               'bg-yellow-700/70 border-yellow-400 text-yellow-50'
@@ -275,26 +324,37 @@ export default function CyberGuardApp() {
           )}
         </div>
 
+        {/* Interaction Area */}
         <div className="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 p-3 sm:p-4 transition-all shadow-2xl">
+          
           {!isScenarioComplete ? (
             <div className="space-y-2 sm:space-y-3">
               <div className="flex justify-between items-center px-1 gap-2">
                 <span className="text-base sm:text-base text-green-400 font-mono">СИГУРНА ВРЪЗКА: АКТИВНА</span>
-                <button onClick={() => setShowClue(!showClue)} className="text-[11px] sm:text-sm flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap">
+                <button 
+                  onClick={() => setShowClue(!showClue)}
+                  className="text-[11px] sm:text-sm flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors uppercase tracking-wide font-bold whitespace-nowrap"
+                >
                   <BrainCircuit className="w-3 h-3 shrink-0" />
                   <span className="hidden sm:inline">{showClue ? 'Скрий данни' : 'Анализ на данни (Жокер)'}</span>
                   <span className="sm:hidden">{showClue ? 'Скрий' : 'Жокер'}</span>
                 </button>
               </div>
+              
               {showClue && (
                 <div className="bg-purple-900/20 border border-purple-500/30 p-2 sm:p-3 rounded-lg text-base sm:text-base text-purple-200 italic flex gap-2 animate-in fade-in">
                   <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 text-purple-400 mt-0.5" />
                   <div className="break-words">{currentScenario.clue}</div>
                 </div>
               )}
+
               <div className="grid gap-2">
                 {currentScenario.options.map((opt) => (
-                  <button key={opt.id} onClick={() => handleChoice(opt)} className="w-full text-left p-2.5 sm:p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-base sm:text-base text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group">
+                  <button
+                    key={opt.id}
+                    onClick={() => handleChoice(opt)}
+                    className="w-full text-left p-2.5 sm:p-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 rounded-lg text-base sm:text-base text-slate-200 transition-all border border-slate-700 hover:border-cyan-500 group"
+                  >
                     <span className="text-cyan-500 font-mono mr-2 opacity-50 group-hover:opacity-100">&gt;</span>
                     <span className="break-words">{opt.text}</span>
                   </button>
@@ -303,7 +363,10 @@ export default function CyberGuardApp() {
             </div>
           ) : (
             <div className="space-y-3">
-              <button onClick={handleContinue} className="w-full py-3 sm:py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 animate-pulse uppercase text-sm sm:text-base">
+              <button 
+                onClick={handleContinue}
+                className="w-full py-3 sm:py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 animate-pulse uppercase text-sm sm:text-base"
+              >
                 {wallet > 0 ? 'Следваща Битка' : 'Виж Доклад'} <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
             </div>
@@ -319,6 +382,7 @@ export default function CyberGuardApp() {
          <div className="absolute -inset-4 bg-red-500 rounded-full opacity-20 blur-xl"></div>
          <XCircle className="w-24 h-24 text-red-400 relative z-10" />
       </div>
+      
       <div className="space-y-2">
         <h2 className="text-3xl font-black text-white tracking-tight">
           СИСТЕМАТА Е КОМПРОМЕТИРАНА
@@ -327,6 +391,7 @@ export default function CyberGuardApp() {
           Твоите кредити свършиха. Измамниците победиха този път.
         </p>
       </div>
+
       <div className="bg-slate-800 w-full max-w-xs rounded-xl p-6 border border-slate-700 grid grid-cols-2 gap-8">
         <div>
           <div className="text-xs text-slate-500 font-bold uppercase mb-1">XP</div>
@@ -334,10 +399,16 @@ export default function CyberGuardApp() {
         </div>
         <div>
           <div className="text-xs text-slate-500 font-bold uppercase mb-1">Остатък Бюджет</div>
-          <div className="text-2xl font-mono font-bold text-red-500">0%</div>
+          <div className="text-2xl font-mono font-bold text-red-500">
+            0%
+          </div>
         </div>
       </div>
-      <button onClick={startGame} className="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-bold transition-all flex items-center gap-2 group uppercase">
+
+      <button 
+        onClick={startGame}
+        className="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-bold transition-all flex items-center gap-2 group uppercase"
+      >
         <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" /> Нов Опит
       </button>
     </div>
@@ -352,38 +423,34 @@ export default function CyberGuardApp() {
         {screen === 'victory' && <RenderVictory />}
         {screen === 'result' && <RenderResult />}
       </main>
-
-      {/* FLYING ANIMATIONS - COMPLETELY ISOLATED VIA PORTAL */}
-      {createPortal(
-        <div className="fixed inset-0 pointer-events-none z-50">
-          <div className="relative w-full h-full">
-            {animations
-              .filter(a => a.type === 'wallet')
-              .map(anim => (
-                <div
-                  key={anim.id}
-                  className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-7xl sm:text-9xl ${anim.color} font-mono opacity-0`}
-                  style={{ animation: 'floatUpFade 2s ease-out forwards' }}
-                >
-                  {anim.value}%
-                </div>
-              ))}
-
-            {animations
-              .filter(a => a.type === 'xp')
-              .map(anim => (
-                <div
-                  key={anim.id}
-                  className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-8xl sm:text-10xl text-purple-400 font-mono opacity-0`}
-                  style={{ animation: 'floatUpFade 2s ease-out forwards, pulse 1s ease-in-out 2' }}
-                >
-                  +{anim.value}
-                </div>
-              ))}
+      
+      {/* Centered Animations */}
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50">
+        {/* Wallet damage animations */}
+        {animations.filter(a => a.type === 'wallet').map(anim => (
+          <div 
+            key={anim.id}
+            className={`absolute font-black text-6xl sm:text-8xl ${anim.color} font-mono drop-shadow-[0_0_30px_rgba(239,68,68,1)]`}
+            style={{
+              animation: 'floatUpFadeBig 4s ease-out forwards'
+            }}
+          >
+            {anim.value}%
           </div>
-        </div>,
-        document.body
-      )}
+        ))}
+        {/* XP gain animations */}
+        {animations.filter(a => a.type === 'xp').map(anim => (
+          <div 
+            key={anim.id}
+            className={`absolute font-black text-7xl sm:text-9xl ${anim.color} font-mono drop-shadow-[0_0_40px_rgba(192,132,252,1)]`}
+            style={{
+              animation: 'floatUpFadeBig 4s ease-out forwards, pulse 0.8s ease-in-out 3'
+            }}
+          >
+            +{anim.value}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
