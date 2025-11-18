@@ -424,7 +424,7 @@ export default function CyberGuardApp() {
         {screen === 'result' && <RenderResult />}
       </main>
 
-      {/* Centered Animations - Completely isolated from layout */}
+      {/* Centered Animations - Completely isolated from layout 
       {animations.filter(a => a.type === 'wallet').map(anim => (
         <div 
           key={anim.id}
@@ -454,7 +454,7 @@ export default function CyberGuardApp() {
         >
           +{anim.value}
         </div>
-      ))}
+      ))}*/}
     </div>
   );
 }
