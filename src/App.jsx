@@ -30,7 +30,6 @@ export default function CyberGuardApp() {
   // --- Scenario State ---
   const [currentScenario, setCurrentScenario] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
-  const [feedback, setFeedback] = useState(null); // null or object { type, text }
   const [showClue, setShowClue] = useState(false);
   const [isScenarioComplete, setIsScenarioComplete] = useState(false);
   const [usedScenarioIds, setUsedScenarioIds] = useState([]);
@@ -42,7 +41,7 @@ export default function CyberGuardApp() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatHistory, feedback]);
+  }, [chatHistory]);
   // Initialize Game
   const startGame = () => {
     setWallet(100);
@@ -82,18 +81,14 @@ export default function CyberGuardApp() {
       sender: scenario.sender,
       avatar: scenario.avatar
     }]);
-    setFeedback(null);
     setShowClue(false);
     setIsScenarioComplete(false);
   };
   const handleChoice = (option) => {
-    // 1. Add User Bubble
-    const newHistory = [...chatHistory, { role: 'user', text: option.text }];
-    setChatHistory(newHistory);
     let xpGain = 0;
     let walletDmg = 0;
     let fbType = 'neutral';
-    // 2. Analyze Outcome
+    // Analyze Outcome
     if (option.outcome === 'success') {
       // 500 XP for fast demo (usually 100)
       xpGain = 500;
@@ -105,9 +100,14 @@ export default function CyberGuardApp() {
       walletDmg = 30;
       fbType = 'danger';
     }
-    setFeedback({ type: fbType, text: option.feedback });
+    // Add User Bubble and Feedback
+    const newHistory = [...chatHistory, 
+      { role: 'user', text: option.text },
+      { role: 'feedback', type: fbType, text: option.feedback }
+    ];
+    setChatHistory(newHistory);
     setIsScenarioComplete(true);
-    // 3. Apply Updates & Trigger Animations
+    // Apply Updates & Trigger Animations
     if (walletDmg > 0) {
       setWallet(prev => Math.max(0, prev - walletDmg));
       // Add wallet damage animation
@@ -138,7 +138,7 @@ export default function CyberGuardApp() {
         setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
       }, 2000);
     }
-    // 4. Check for Victory
+    // Check for Victory
     if (reputation + xpGain >= 2000) {
       setTimeout(() => {
         setScreen('victory');
@@ -259,43 +259,46 @@ export default function CyberGuardApp() {
       <div className="flex flex-col h-full w-full max-w-2xl mx-auto bg-slate-950 relative">
         {/* Chat Area */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[280px] sm:pb-[320px]">
-          {chatHistory.map((msg, idx) => (
-            <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-
-              {msg.role === 'bot' && (
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-bas sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
-                  {msg.role === 'bot' ? '?' : 'АЗ'}
-                </div>
-              )}
-              <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-base sm:text-base leading-relaxed shadow-md break-words ${
-                msg.role === 'user'
-                  ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm'
-                  : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
-              }`}>
-                {msg.role === 'bot' && (
-                  <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
-                    <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
-                    <span className="break-all">ОТ: {msg.sender}</span>
+          {chatHistory.map((msg, idx) => {
+            if (msg.role === 'feedback') {
+              return (
+                <div key={idx} className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
+                  msg.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
+                  msg.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
+                  'bg-yellow-700/70 border-yellow-400 text-yellow-50'
+                }`}>
+                  <div className="flex items-center gap-2 font-bold mb-1 text-sm sm:text-sm uppercase tracking-wider">
+                    {msg.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0"/> : <XCircle className="w-4 h-4 shrink-0"/>}
+                    <span className="break-words">{msg.type === 'success' ? 'ЗАПЛАХАТА E НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}</span>
                   </div>
-                )}
-                <div className="whitespace-pre-wrap break-words">{msg.text}</div>
-              </div>
-            </div>
-          ))}
-          {/* Feedback Overlay Bubble */}
-          {feedback && (
-            <div className={`p-3 sm:p-4 rounded-xl border animate-in slide-in-from-bottom-10 duration-300 ${
-              feedback.type === 'success' ? 'bg-green-700/70 border-green-400 text-green-50' :
-              feedback.type === 'danger' ? 'bg-red-700/70 border-red-400 text-red-50' :
-              'bg-yellow-700/70 border-yellow-400 text-yellow-50'
-            }`}>
-              <div className="flex items-center gap-2 font-bold mb-1 text-sm sm:text-sm uppercase tracking-wider">
-                {feedback.type === 'success' ? <CheckCircle2 className="w-4 h-4 shrink-0"/> : <XCircle className="w-4 h-4 shrink-0"/>}
-                <span className="break-words">{feedback.type === 'success' ? 'ЗАПЛАХАТА E НЕУТРАЛИЗИРАНА' : 'ПРОБИВ В СИГУРНОСТТА'}</span>
-              </div>
-              <p className="text-base sm:text-base opacity-90 break-words">{feedback.text}</p>
-            </div>
-          )}
+                  <p className="text-base sm:text-base opacity-90 break-words">{msg.text}</p>
+                </div>
+              );
+            } else {
+              return (
+                <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  {msg.role === 'bot' && (
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-bas sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
+                      {msg.role === 'bot' ? '?' : 'АЗ'}
+                    </div>
+                  )}
+                  <div className={`max-w-[85%] sm:max-w-[80%] p-3 sm:p-4 text-base sm:text-base leading-relaxed shadow-md break-words ${
+                    msg.role === 'user'
+                      ? 'bg-cyan-600 text-white rounded-2xl rounded-tr-sm'
+                      : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm border border-slate-700'
+                  }`}>
+                    {msg.role === 'bot' && (
+                      <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
+                        <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
+                        <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
+                      </div>
+                    )}
+                    <div className="whitespace-pre-wrap break-words">{msg.text}</div>
+                  </div>
+                </div>
+              );
+            }
+          })}
         </div>
         {/* Interaction Area */}
         <div className="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 p-3 sm:p-4 transition-all shadow-2xl">
