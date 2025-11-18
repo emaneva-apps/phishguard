@@ -28,7 +28,7 @@ export default function CyberGuardApp() {
   const [wallet, setWallet] = useState(100);
   const [reputation, setReputation] = useState(0);
   const [level, setLevel] = useState(1);
-  
+
   // --- Scenario State ---
   const [currentScenario, setCurrentScenario] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
@@ -61,26 +61,26 @@ export default function CyberGuardApp() {
   const loadRandomScenario = () => {
     // Filter out already used scenarios
     const availableScenarios = SCENARIOS.filter(s => !usedScenarioIds.includes(s.id));
-    
+
     // If all scenarios have been used, reset and start over
     if (availableScenarios.length === 0) {
       setUsedScenarioIds([]);
       return loadRandomScenario();
     }
-    
+
     const randomIndex = Math.floor(Math.random() * availableScenarios.length);
     const scenario = availableScenarios[randomIndex];
-    
+
     // Mark this scenario as used
     setUsedScenarioIds(prev => [...prev, scenario.id]);
-    
+
     // Shuffle options using Fisher-Yates algorithm
     const shuffledOptions = [...scenario.options];
     for (let i = shuffledOptions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
     }
-    
+
     setCurrentScenario({...scenario, options: shuffledOptions});
     setChatHistory([{ 
       role: 'bot', 
@@ -133,7 +133,7 @@ export default function CyberGuardApp() {
         setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
       }, 2000);
     }
-    
+
     if (xpGain > 0) {
       const newReputation = reputation + xpGain;
       setReputation(newReputation);
@@ -182,7 +182,7 @@ export default function CyberGuardApp() {
           <p className="text-[9px] sm:text-lg text-slate-400 font-mono">НИВО {level}</p>
         </div>
       </div>
-      
+
       <div className="flex gap-2 sm:gap-3">
         {/* Wallet / HP */}
         <div className="flex flex-col items-end">
@@ -214,7 +214,7 @@ export default function CyberGuardApp() {
         <div className="absolute -inset-4 bg-cyan-300/40 rounded-full blur-xl animate-pulse" style={{animationDuration: '2s'}}></div>
         <Shield className="w-32 h-32 text-cyan-400 relative z-10 drop-shadow-[0_0_40px_rgba(34,211,238,1)] filter brightness-110" />
       </div>
-      
+
       <div className="space-y-4 max-w-xs relative z-10">
         <h2 className="text-3xl font-black text-white uppercase">СТАНИ<br/>КИБЕР СТРАЖ</h2>
         <p className="text-slate-400 text-base">
@@ -247,15 +247,15 @@ export default function CyberGuardApp() {
            <Star className="w-6 h-6 text-yellow-200 absolute bottom-0 -left-4 animate-bounce delay-100" />
         </div>
       </div>
-      
+
       <div className="space-y-4 z-10 max-w-sm">
         <div className="space-y-2">
           <h2 className="text-xs font-bold text-amber-500 tracking-[0.3em] uppercase">Статус Потвърден</h2>
           <h1 className="text-4xl font-black text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">
-            КИБЕР СТРАЖ
+            КИБЕР АГЕНТ
           </h1>
         </div>
-        
+
         <div className="bg-slate-800/80 backdrop-blur-sm border border-amber-500/30 p-6 rounded-xl shadow-2xl">
           <p className="text-slate-300 text-base leading-relaxed">
             Демонстрира изключителни умения за засичане на заплахи. Вече си сертифициран защитник на мрежата.
@@ -284,7 +284,7 @@ export default function CyberGuardApp() {
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[280px] sm:pb-[320px]">
           {chatHistory.map((msg, idx) => (
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              
+
               {msg.role === 'bot' && (
                 <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mr-2 sm:mr-3 text-bas sm:text-sm font-bold text-white shadow-lg shrink-0 ${msg.avatar || 'bg-red-700/70 border-red-400'}`}>
                   {msg.role === 'bot' ? '?' : 'АЗ'}
@@ -299,7 +299,7 @@ export default function CyberGuardApp() {
                 {msg.role === 'bot' && (
                   <div className="text-base sm:text-base text-slate-400 mb-2 font-mono uppercase tracking-widest flex items-center gap-1 sm:gap-2 flex-wrap">
                     <AlertTriangle className="w-3 h-3 text-yellow-200 shrink-0" />
-                    <span className="break-all">ВХОДЯЩ СИГНАЛ: {msg.sender}</span>
+                    <span className="break-all">ОТ: {msg.sender}</span>
                   </div>
                 )}
                 <div className="whitespace-pre-wrap break-words">{msg.text}</div>
@@ -326,7 +326,7 @@ export default function CyberGuardApp() {
 
         {/* Interaction Area */}
         <div className="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-700 p-3 sm:p-4 transition-all shadow-2xl">
-          
+
           {!isScenarioComplete ? (
             <div className="space-y-2 sm:space-y-3">
               <div className="flex justify-between items-center px-1 gap-2">
@@ -340,7 +340,7 @@ export default function CyberGuardApp() {
                   <span className="sm:hidden">{showClue ? 'Скрий' : 'Жокер'}</span>
                 </button>
               </div>
-              
+
               {showClue && (
                 <div className="bg-purple-900/20 border border-purple-500/30 p-2 sm:p-3 rounded-lg text-base sm:text-base text-purple-200 italic flex gap-2 animate-in fade-in">
                   <Zap className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 text-purple-400 mt-0.5" />
@@ -382,7 +382,7 @@ export default function CyberGuardApp() {
          <div className="absolute -inset-4 bg-red-500 rounded-full opacity-20 blur-xl"></div>
          <XCircle className="w-24 h-24 text-red-400 relative z-10" />
       </div>
-      
+
       <div className="space-y-2">
         <h2 className="text-3xl font-black text-white tracking-tight">
           СИСТЕМАТА Е КОМПРОМЕТИРАНА
@@ -415,7 +415,7 @@ export default function CyberGuardApp() {
   );
 
   return (
-    <div className="bg-slate-950 w-full h-full font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden">
+    <div className="bg-slate-950 w-full h-full font-sans text-slate-200 flex flex-col selection:bg-cyan-500/30 overflow-hidden fixed inset-0">
       {screen !== 'home' && screen !== 'result' && screen !== 'victory' && <RenderHeader />}
       <main className="flex-1 relative overflow-hidden w-full">
         {screen === 'home' && <RenderHome />}
@@ -423,9 +423,9 @@ export default function CyberGuardApp() {
         {screen === 'victory' && <RenderVictory />}
         {screen === 'result' && <RenderResult />}
       </main>
-      
+
       {/* Centered Animations */}
-          <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50 overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden">
         {/* Wallet damage animations */}
         {animations.filter(a => a.type === 'wallet').map(anim => (
           <div 
