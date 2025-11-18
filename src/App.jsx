@@ -252,7 +252,7 @@ export default function CyberGuardApp() {
         <div className="space-y-2">
           <h2 className="text-xs font-bold text-amber-500 tracking-[0.3em] uppercase">Статус Потвърден</h2>
           <h1 className="text-4xl font-black text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">
-            КИБЕР АГЕНТ
+            КИБЕР СТРАЖ
           </h1>
         </div>
         
@@ -425,7 +425,7 @@ export default function CyberGuardApp() {
       </main>
       
       {/* Centered Animations */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50">
+        <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50 overflow-hidden">
         {/* Wallet damage animations */}
         {animations.filter(a => a.type === 'wallet').map(anim => (
           <div 
