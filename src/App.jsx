@@ -94,22 +94,17 @@ export default function CyberGuardApp() {
   };
 
   const handleChoice = (option) => {
-    // --- IMMEDIATE ACTIONS ---
-
-    // 1. Add User Bubble immediately so they see what they clicked
+    // 1. Add User Bubble
     const newHistory = [...chatHistory, { role: 'user', text: option.text }];
     setChatHistory(newHistory);
 
-    // 2. Hide the buttons immediately
-    // This switches the UI from "options" to "continue button" instantly
-    setIsScenarioComplete(true);
-
-    // --- CALCULATIONS (Prepare data for the delayed update) ---
     let xpGain = 0;
     let walletDmg = 0;
     let fbType = 'neutral';
 
+    // 2. Analyze Outcome
     if (option.outcome === 'success') {
+      // 500 XP for fast demo (usually 100)
       xpGain = 500; 
       fbType = 'success';
     } else if (option.outcome === 'neutral') {
@@ -120,61 +115,51 @@ export default function CyberGuardApp() {
       fbType = 'danger';
     }
 
-    // --- DELAYED ACTIONS ---
+    setFeedback({ type: fbType, text: option.feedback });
+    setIsScenarioComplete(true);
 
-    // 3. Wait 600ms before showing feedback and applying damage/xp
-    setTimeout(() => {
-      // Show the feedback bubble
-      setFeedback({ type: fbType, text: option.feedback });
+    // 3. Apply Updates & Trigger Animations
+    if (walletDmg > 0) {
+      setWallet(prev => Math.max(0, prev - walletDmg));
+      // Add wallet damage animation
+      const walletAnim = {
+        id: Date.now() + Math.random(),
+        type: 'wallet',
+        value: -walletDmg,
+        color: fbType === 'danger' ? 'text-red-500' : 'text-yellow-500'
+      };
+      setAnimations(prev => [...prev, walletAnim]);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
+      }, 2000);
+    }
+    
+    if (xpGain > 0) {
+      const newReputation = reputation + xpGain;
+      setReputation(newReputation);
+      // Add XP gain animation
+      const xpAnim = {
+        id: Date.now() + Math.random(),
+        type: 'xp',
+        value: xpGain,
+        color: 'text-purple-400'
+      };
+      setAnimations(prev => [...prev, xpAnim]);
+      setTimeout(() => {
+        setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
+      }, 2000);
+    }
 
-      // Apply Updates & Trigger Animations
-      if (walletDmg > 0) {
-        setWallet(prev => Math.max(0, prev - walletDmg));
-
-        const walletAnim = {
-          id: Date.now() + Math.random(),
-          type: 'wallet',
-          value: -walletDmg,
-          color: fbType === 'danger' ? 'text-red-500' : 'text-yellow-500'
-        };
-        setAnimations(prev => [...prev, walletAnim]);
-
-        setTimeout(() => {
-          setAnimations(prev => prev.filter(a => a.id !== walletAnim.id));
-        }, 2000);
-      }
-
-      if (xpGain > 0) {
-        const newReputation = reputation + xpGain;
-        setReputation(newReputation);
-
-        const xpAnim = {
-          id: Date.now() + Math.random(),
-          type: 'xp',
-          value: xpGain,
-          color: 'text-purple-400'
-        };
-        setAnimations(prev => [...prev, xpAnim]);
-
-        setTimeout(() => {
-          setAnimations(prev => prev.filter(a => a.id !== xpAnim.id));
-        }, 2000);
-      }
-
-      // 4. Check for Victory/Defeat (Based on the calculated values)
-      // We use the calculated values (wallet - walletDmg) because the state
-      // might not have visually updated yet within this closure.
-      if (reputation + xpGain >= 2000) {
-        setTimeout(() => {
-          setScreen('victory');
-        }, 2000);
-      } else if (wallet - walletDmg <= 0) {
-         setTimeout(() => {
-          setScreen('result');
-        }, 2000);
-      }
-
-    }, 600); // <--- This 600ms delay creates the pause you asked for
+    // 4. Check for Victory
+    if (reputation + xpGain >= 2000) {
+      setTimeout(() => {
+        setScreen('victory');
+      }, 2000);
+    } else if (wallet - walletDmg <= 0) {
+       setTimeout(() => {
+        setScreen('result');
+      }, 2000);
+    }
   };
 
   const handleContinue = () => {
@@ -296,7 +281,7 @@ export default function CyberGuardApp() {
     return (
       <div className="flex flex-col h-full w-full max-w-2xl mx-auto bg-slate-950 relative">
         {/* Chat Area */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[280px] sm:pb-[320px]">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 pb-[100px] sm:pb-[100px]">
           {chatHistory.map((msg, idx) => (
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               
