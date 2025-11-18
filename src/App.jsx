@@ -425,7 +425,7 @@ export default function CyberGuardApp() {
       </main>
       
       {/* Centered Animations */}
-        <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50 overflow-hidden">
+          <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-50 overflow-hidden">
         {/* Wallet damage animations */}
         {animations.filter(a => a.type === 'wallet').map(anim => (
           <div 
